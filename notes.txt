@@ -1,0 +1,12 @@
+
+venv\Scripts\activate -->for env
+uvicorn main:app --reload -->to run
+
+24-02-2026--->
+>--FastAPI--: A tool to easily build the "Kitchen" (a web server).
+>--pydantic--: A tool to create strict rules for data (more on this below).
+Pydantic to force the AI to return structured JSON.
+>--google.genai--: Google's official tool to talk to the Gemini AI.
+>--dotenv--: A tool to securely load your secret API key from a .env file so hackers don't see it in your code.
+
+>used API Integration to connect my application to Google’s pre-trained AI.
