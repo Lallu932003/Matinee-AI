@@ -1,0 +1,314 @@
+:root {
+    --bg-dark: black;
+    --bg-card: rgba(18, 18, 18, 0.8);
+    --vex-red: #FF2B2B;
+    --vex-orange: #7A1E1E;
+    --text-white: #ffffff;
+    --text-muted: #888888;
+    --accent-glow: rgba(255, 43, 43, 0.2);
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-white);
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    cursor: none; /* Hide default cursor */
+}
+
+/* Custom Cursor */
+.cursor-follower {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: var(--vex-red);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: transform 0.1s ease-out, background 0.3s ease;
+    box-shadow: 0 0 15px var(--vex-red);
+}
+
+.cursor-follower.hover {
+    transform: scale(3);
+    background: var(--text-white);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Background Animation */
+.bg-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 50%, #111111 0%, #000000 100%);
+}
+
+.blob {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: move 20s infinite alternate;
+}
+
+@keyframes move {
+    from { transform: translate(-10%, -10%); }
+    to { transform: translate(20%, 20%); }
+}
+
+/* Glassmorphism */
+.glass-panel {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass-panel:hover {
+    border-color: rgba(255, 43, 43, 0.2);
+    transform: translateY(-5px);
+}
+
+/* Typography & Colors */
+.vex-red-text { color: var(--vex-red); text-shadow: 0 0 15px rgba(255, 43, 43, 0.4); }
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--vex-red), var(--vex-orange));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Landing Page Specifics */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+}
+
+.hero-image {
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+    opacity: 0.3;
+    pointer-events: none;
+    mask-image: linear-gradient(to left, black 50%, transparent);
+}
+
+/* Navigation */
+.nav-tab {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.nav-tab:hover { color: var(--text-white); background: rgba(255,255,255,0.05); }
+.nav-tab.active {
+    color: var(--vex-red);
+    background: rgba(255, 43, 43, 0.1);
+    box-shadow: inset 0 0 10px rgba(255, 43, 43, 0.2);
+}
+
+/* Persona Studio Tabs */
+.sub-nav {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: rgba(0,0,0,0.3);
+    padding: 0.5rem;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.sub-tab {
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 8px;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.sub-tab.active {
+    background: var(--vex-red);
+    color: white;
+}
+
+/* Table Enhancements */
+table tr { transition: all 0.2s ease; }
+table tr:hover { background: rgba(255, 43, 43, 0.05); }
+
+/* Persona Cards in Vault */
+.persona-card {
+    border-left: 3px solid var(--vex-red);
+    background: linear-gradient(90deg, rgba(255, 43, 43, 0.05) 0%, transparent 100%);
+}
+
+/* Features & About Sections */
+.landing-content-section {
+    padding: 8rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+}
+
+.character-card {
+    position: relative;
+    padding: 3rem;
+    border-radius: 2rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.5s ease;
+}
+
+.character-card:hover {
+    border-color: var(--vex-red);
+    background: rgba(255, 43, 43, 0.03);
+}
+
+.character-silhouette {
+    position: absolute;
+    bottom: -10%;
+    right: -10%;
+    width: 60%;
+    opacity: 0.15;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+.character-card:hover .character-silhouette {
+    opacity: 0.3;
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Action Buttons for Personas */
+.persona-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    transition: all 0.2s ease;
+    border: none;
+    cursor: none;
+}
+
+.action-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Edit Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Glass Input */
+.glass-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    border-color: var(--vex-red);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Fix for native select dropdown options readability */
+.glass-input option {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+}
+
+/* Scroll Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+.scanner::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 2px;
+    background: var(--vex-red);
+    box-shadow: 0 0 15px var(--vex-red);
+    animation: scanline 3s linear infinite;
+    pointer-events: none;
+}
+
+.hidden { display: none !important; }
+.animate-fade-in { animation: fadeIn 0.8s ease-out; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 3s;
+}
+
