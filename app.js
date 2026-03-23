@@ -169,15 +169,15 @@ function viewGroupDetails(groupId) {
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    ${group.personas.map(p => `
+                    ${group.personas.map((p, index) => `
                         <div class="glass-panel rounded-3xl p-8 space-y-4 border-l-4 border-l-red-500">
                              <div class="flex justify-between items-center">
                                 <h4 class="text-xl font-black text-red-500">${p.name}</h4>
                                 <div class="flex gap-2">
-                                    <button onclick="openEditModal('${group.id}', '${p.name}')" class="action-btn text-red-500 hover:text-red-400">
+                                    <button onclick="openEditModal('${group.id}', ${index})" class="action-btn text-red-500 hover:text-red-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
                                     </button>
-                                    <button onclick="deletePersona('${group.id}', '${p.name}')" class="action-btn text-red-500 hover:text-red-400">
+                                    <button onclick="deletePersona('${group.id}', ${index})" class="action-btn text-red-500 hover:text-red-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </div>
@@ -397,23 +397,20 @@ function closeConfirmModal() {
     activeConfirmCallback = null;
 }
 
-const confirmActionBtn = document.getElementById('confirm-action-btn');
-if (confirmActionBtn) {
-    confirmActionBtn.addEventListener('click', () => {
-        if (activeConfirmCallback) {
-            activeConfirmCallback();
-            closeConfirmModal();
-        }
-    });
+function executeConfirmAction() {
+    if (activeConfirmCallback) {
+        activeConfirmCallback();
+        closeConfirmModal();
+    }
 }
-
-// --- Edit/Delete Persona Logic ---
-function deletePersona(groupId, personaName) {
+// Event listener setup replaced by inline onclick
+function deletePersona(groupId, personaIndex) {
+    const group = personaGroups.find(g => g.id === groupId);
+    if (!group || !group.personas[personaIndex]) return;
+    const personaName = group.personas[personaIndex].name;
+    
     openConfirmModal(`Permanently remove ${personaName} from this audience vault?`, () => {
-        const group = personaGroups.find(g => g.id === groupId);
-        if (!group) return;
-        
-        group.personas = group.personas.filter(p => p.name !== personaName);
+        group.personas.splice(personaIndex, 1);
         saveState();
         
         // Refresh UI
@@ -424,18 +421,21 @@ function deletePersona(groupId, personaName) {
     });
 }
 
-function openEditModal(groupId, personaName) {
+function openEditModal(groupId, personaIndex) {
     const group = personaGroups.find(g => g.id === groupId);
-    const persona = group.personas.find(p => p.name === personaName);
+    const persona = group.personas[personaIndex];
+    if (!persona) return;
     
     const editModal = document.getElementById('edit-modal');
     if (!editModal) return;
 
     document.getElementById('edit-group-id').value = groupId;
-    document.getElementById('edit-persona-id').value = personaName; // Use name as ID for now
+    document.getElementById('edit-persona-id').value = personaIndex;
     document.getElementById('edit-persona-name').value = persona.name;
     document.getElementById('edit-persona-age').value = persona.age;
     document.getElementById('edit-persona-gender').value = persona.gender;
+    document.getElementById('edit-persona-job').value = persona.job || '';
+    document.getElementById('edit-persona-location').value = persona.location || '';
     document.getElementById('edit-persona-bio').value = persona.description;
     
     editModal.classList.remove('hidden');
@@ -449,14 +449,17 @@ function closeEditModal() {
 
 function savePersonaEdit() {
     const groupId = document.getElementById('edit-group-id').value;
-    const oldName = document.getElementById('edit-persona-id').value;
+    const personaIndex = parseInt(document.getElementById('edit-persona-id').value, 10);
     
     const group = personaGroups.find(g => g.id === groupId);
-    const persona = group.personas.find(p => p.name === oldName);
+    const persona = group.personas[personaIndex];
+    if (!persona) return;
     
     persona.name = document.getElementById('edit-persona-name').value;
     persona.age = document.getElementById('edit-persona-age').value;
     persona.gender = document.getElementById('edit-persona-gender').value;
+    persona.job = document.getElementById('edit-persona-job').value;
+    persona.location = document.getElementById('edit-persona-location').value;
     persona.description = document.getElementById('edit-persona-bio').value;
     
     saveState();
